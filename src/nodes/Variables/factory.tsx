@@ -1,4 +1,10 @@
-import { AbstractReactFactory, DiagramEngine, GenerateWidgetEvent } from '@projectstorm/react-diagrams';
+import {
+  AbstractReactFactory,
+  DiagramEngine,
+  GenerateModelEvent,
+  GenerateWidgetEvent,
+} from '@projectstorm/react-diagrams';
+import { eventBus } from '../../data/eventBus';
 import { VariablesNodeModel } from './model';
 import { VariablesNodeWidget } from './widget';
 
@@ -11,7 +17,7 @@ export class VariablesNodeFactory extends AbstractReactFactory<VariablesNodeMode
     return <VariablesNodeWidget engine={this.engine} node={event.model} />;
   }
 
-  generateModel() {
-    return new VariablesNodeModel();
+  generateModel(event: GenerateModelEvent) {
+    return new VariablesNodeModel(event.initialConfig, eventBus);
   }
 }

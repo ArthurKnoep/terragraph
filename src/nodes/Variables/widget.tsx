@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FiType, FiEdit, FiPlus } from 'react-icons/fi';
+import { FiType, FiEdit, FiPlus, FiTrash2 } from 'react-icons/fi';
 import { DiagramEngine, PortWidget } from '@projectstorm/react-diagrams';
 import { OneLineEdit } from '../../components/OneLineEdit';
 import { Variable, VariablesNodeModel } from './model';
@@ -42,6 +42,11 @@ export function VariablesNodeWidget({
     setVars([...node.getVars()]);
   };
 
+  const onVarDelete = (identifier: string) => {
+    node.varDelete(identifier);
+    setVars([...node.getVars()]);
+  }
+
   return (
     <div
       className={styles.wrapper}
@@ -67,6 +72,7 @@ export function VariablesNodeWidget({
             ) : (
               <OneLineEdit onCancel={() => setEditIdentifier(undefined)} onConfirm={(value: string) => onVarRename(variable.identifier, value)} initialValue={variable.name} />
             )}
+            <FiTrash2 className={styles.delete} onClick={() => onVarDelete(variable.identifier)} />
             <PortWidget port={node.getPort('out')!} engine={engine} className={styles.port} />
           </div>
         ))}
