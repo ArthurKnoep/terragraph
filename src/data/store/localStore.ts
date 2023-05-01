@@ -1,15 +1,17 @@
 import { DiagramModel } from '@projectstorm/react-diagrams';
 import { VariablesNodeModel } from '../../nodes/Variables';
+import { engine } from '../diagram';
 import { eventBus } from '../eventBus';
-import { DataBlock, NodeBlock } from '../types';
+import { DataBlock, NodeBlock, Position } from '../types';
 
 const STORAGE_KEY = 'terragraph-nodedata';
 
+export const FactoryMap: { [k: string]: any } = {
+  'variables': VariablesNodeModel,
+}
+
 export class LocalStore {
   private data?: DataBlock = undefined;
-  private static factoryMap: { [k: string]: any } = {
-    'variables': VariablesNodeModel,
-  }
 
   loadData() {
     this.data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
@@ -21,10 +23,19 @@ export class LocalStore {
 
   registerListeners() {
     eventBus.on('node:updated', this.handleNodeUpdated.bind(this));
+    eventBus.on('node:added', this.handleNodeAdded.bind(this));
   }
 
   unregisterListeners() {
     eventBus.off('node:updated', this.handleNodeUpdated.bind(this));
+    eventBus.off('node:added', this.handleNodeAdded.bind(this));
+  }
+
+  private handleNodeAdded(data: NodeBlock<any>) {
+    if (!this.data) throw new Error('No data loaded');
+    this.data.nodes = this.data.nodes ?? [];
+    this.data.nodes.push(data);
+    this.saveData();
   }
 
   private handleNodeUpdated(node: NodeBlock<any>) {
@@ -40,12 +51,14 @@ export class LocalStore {
   recreateSavedNodes(model: DiagramModel) {
     if (!this.data) throw new Error('No data loaded');
     if (!this.data.nodes) return;
+    //TODO: ensure node does not already exist before re-populating
     this.data.nodes.forEach((node) => {
-      const NodeModel = LocalStore.factoryMap[node.nodeType];
+      const NodeModel = FactoryMap[node.nodeType];
       if (!NodeModel) throw new Error(`Unknown node type ${node.nodeType}`);
       const nodeModel = new NodeModel(node, eventBus);
       model.addNode(nodeModel);
     });
+    engine.repaintCanvas();
   }
 }
 

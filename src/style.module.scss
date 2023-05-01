@@ -1,0 +1,16 @@
+@import "./styles/global";
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+
+  .canvas {
+    width: 100%;
+    height: 100%;
+    background: $background-color;
+    background-image: radial-gradient(#FFFFFF21 1px, transparent 0);
+    background-size: 20px 20px;
+    background-position: -19px -19px;
+  }
+}

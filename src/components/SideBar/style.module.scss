@@ -1,0 +1,27 @@
+@import '../../styles/global.scss';
+
+.sideBar {
+  background: $background-color;
+  border-right: 1px solid $border-color;
+  width: 20%;
+  min-width: 150px;
+  color: white;
+
+  .nodeList {
+    padding-top: 60px;
+
+    .sectionHeader {
+      background-color: $background-secondary-color;
+      padding: 10px 15px;
+      margin: 5px 10px;
+    }
+
+    .sectionList {
+      padding: 10px 10px 10px 25px;
+    }
+
+    .noProvider {
+      color: rgba(255, 255, 255, 0.4);
+    }
+  }
+}
