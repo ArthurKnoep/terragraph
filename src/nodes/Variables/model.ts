@@ -48,8 +48,13 @@ export class VariablesNodeModel extends NodeModel<NodeModelGenerics & VariablesN
     this.data = data;
     this.addPort(new VariablePortModel());
     this.registerListener({
-      positionChanged: this.onPositionChanged.bind(this)
+      positionChanged: this.onPositionChanged.bind(this),
+      entityRemoved: this.onRemove.bind(this),
     });
+  }
+
+  onRemove() {
+    this.eventBus.emit('node:removed', { ...this.data });
   }
 
   onPositionChanged(event: any) {

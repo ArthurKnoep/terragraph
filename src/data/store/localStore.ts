@@ -24,17 +24,25 @@ export class LocalStore {
   registerListeners() {
     eventBus.on('node:updated', this.handleNodeUpdated.bind(this));
     eventBus.on('node:added', this.handleNodeAdded.bind(this));
+    eventBus.on('node:removed', this.handleNodeRemoved.bind(this));
   }
 
   unregisterListeners() {
     eventBus.off('node:updated', this.handleNodeUpdated.bind(this));
     eventBus.off('node:added', this.handleNodeAdded.bind(this));
+    eventBus.off('node:removed', this.handleNodeRemoved.bind(this));
   }
 
   private handleNodeAdded(data: NodeBlock<any>) {
     if (!this.data) throw new Error('No data loaded');
     this.data.nodes = this.data.nodes ?? [];
     this.data.nodes.push(data);
+    this.saveData();
+  }
+
+  private handleNodeRemoved(data: NodeBlock<any>) {
+    if (!this.data) throw new Error('No data loaded');
+    this.data.nodes = this.data.nodes.filter((n) => n.id !== data.id);
     this.saveData();
   }
 
