@@ -51,8 +51,8 @@ export class LocalStore {
   recreateSavedNodes(model: DiagramModel) {
     if (!this.data) throw new Error('No data loaded');
     if (!this.data.nodes) return;
-    //TODO: ensure node does not already exist before re-populating
     this.data.nodes.forEach((node) => {
+      if (model.getNode(node.id)) return;
       const NodeModel = FactoryMap[node.nodeType];
       if (!NodeModel) throw new Error(`Unknown node type ${node.nodeType}`);
       const nodeModel = new NodeModel(node, eventBus);

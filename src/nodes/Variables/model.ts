@@ -4,8 +4,9 @@ import {
   NodeModel,
   NodeModelGenerics,
   PortModel,
-  PortModelAlignment, BaseEntityEvent, BaseEntity, BaseEvent,
+  PortModelAlignment,
 } from '@projectstorm/react-diagrams';
+import { Point } from '@projectstorm/geometry';
 import { v4 as uuid } from 'uuid';
 import { EventBus } from '../../data/eventBus';
 import { NodeBlock } from '../../data/types';
@@ -39,12 +40,13 @@ export class VariablesNodeModel extends NodeModel<NodeModelGenerics & VariablesN
 
   constructor(data: NodeBlock<VariablesNodeModelGenerics>, eventBus: EventBus) {
     super({
-      type: 'variables'
+      id: data.id,
+      position: new Point(data.position.x, data.position.y),
+      type: 'variables',
     });
     this.eventBus = eventBus;
     this.data = data;
     this.addPort(new VariablePortModel());
-    this.setPosition(data.position.x, data.position.y);
     this.registerListener({
       positionChanged: this.onPositionChanged.bind(this)
     });

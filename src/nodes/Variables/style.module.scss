@@ -1,41 +1,12 @@
 @import "../../styles/global";
 
-.wrapper {
-  background: $variable-main-color;
-  box-shadow: 0 0 4px 2px #FFFFFF66;
-  color: white;
-  min-width: 200px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 4px;
-
-  .header {
-    border-radius: 4px 4px 0 0;
-    background: $variable-header-color;
-    display: flex;
-    align-items: center;
-
-    .nodeName {
-      padding: 7px 5px;
-      flex-grow: 1;
-
-      & > span {
-        padding-left: 5px;
-      }
-      & > * {
-        vertical-align: middle;
-      }
-    }
-
-    & > svg {
-      padding: 4px 2px;
-      margin: 4px 3px;
-      cursor: pointer;
-    }
+.nodeWrapper {
+  background-color: $variables-main-color;
+  & > div:first-child {
+    background-color: $variables-header-color;
   }
 
   .varLines {
-
     .varLine {
       display: flex;
       align-items: center;
@@ -102,23 +73,6 @@
   color: rgba(255, 255, 255, 0.38);
 }
 
-.iconDisabled {
-  color: #ffffff69;
-}
-
-.pickerWrapper {
-  background-color: $variable-header-color;
-  padding: 10px 7px;
-  border-radius: 4px;
-  cursor: grab;
-
-  .nodeIcon {
-    line-height: 16px;
-    vertical-align: middle;
-  }
-
-  .nodeName {
-    padding-left: 5px;
-    vertical-align: middle;
-  }
+.picker {
+  background-color: $variables-header-color;
 }

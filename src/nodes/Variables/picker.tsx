@@ -1,4 +1,5 @@
 import { FiType } from 'react-icons/fi';
+import { Picker } from '../../components/Picker';
 import { dragManager } from '../../data/dragManager';
 import { VariablesNodeModelGenerics } from './model';
 import styles from './style.module.scss';
@@ -24,9 +25,6 @@ export const VariablesPicker = ({
   };
 
   return (
-    <div draggable={true} onDragStart={handleDragStart} className={styles.pickerWrapper}>
-      <FiType className={styles.nodeIcon} />
-      <span className={styles.nodeName}>Variables</span>
-    </div>
+    <Picker icon={FiType} name="Variables" className={styles.picker} onDragStart={handleDragStart} />
   );
 }
