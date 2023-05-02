@@ -18,6 +18,13 @@
 
     .sectionList {
       padding: 10px 10px 10px 25px;
+
+      & > div:not(:last-child) {
+        margin-bottom: 10px;
+      }
+      & > div:last-child {
+        margin-bottom: 15px;
+      }
     }
 
     .noProvider {

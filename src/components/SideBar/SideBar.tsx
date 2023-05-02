@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { OutputsPicker } from '../../nodes/Outputs/picker';
 import { VariablesPicker } from '../../nodes/Variables/picker';
 import styles from './style.module.scss';
 
@@ -15,6 +16,7 @@ export const SideBar = ({
         <div className={styles.sectionHeader}>Basic nodes</div>
         <div className={styles.sectionList}>
           <VariablesPicker />
+          <OutputsPicker />
         </div>
         <div className={styles.sectionHeader}>Provider nodes</div>
         <div className={styles.sectionList}>

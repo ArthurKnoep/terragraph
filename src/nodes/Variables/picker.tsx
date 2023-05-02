@@ -4,13 +4,7 @@ import { dragManager } from '../../data/dragManager';
 import { VariablesNodeModelGenerics } from './model';
 import styles from './style.module.scss';
 
-export interface Props {
-
-}
-
-export const VariablesPicker = ({
-
-}: Props) => {
+export const VariablesPicker = () => {
   const handleDragStart = (evt: React.DragEvent<HTMLDivElement>) => {
     dragManager.registerDragStart<VariablesNodeModelGenerics>({
       position: {
