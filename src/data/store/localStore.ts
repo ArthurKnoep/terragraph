@@ -1,13 +1,15 @@
 import { DiagramModel } from '@projectstorm/react-diagrams';
+import { OutputsNodeModel } from '../../nodes/Outputs';
 import { VariablesNodeModel } from '../../nodes/Variables';
 import { engine } from '../diagram';
 import { eventBus } from '../eventBus';
-import { DataBlock, NodeBlock, Position } from '../types';
+import { DataBlock, NodeBlock } from '../types';
 
 const STORAGE_KEY = 'terragraph-nodedata';
 
 export const FactoryMap: { [k: string]: any } = {
   'variables': VariablesNodeModel,
+  'outputs': OutputsNodeModel,
 }
 
 export class LocalStore {

@@ -1,31 +1,32 @@
+import { v4 as uuid } from 'uuid';
+import { Point } from '@projectstorm/geometry';
 import {
-  LinkModel,
   DefaultLinkModel,
+  LinkModel,
   NodeModel,
   NodeModelGenerics,
   PortModel,
   PortModelAlignment,
 } from '@projectstorm/react-diagrams';
-import { Point } from '@projectstorm/geometry';
-import { v4 as uuid } from 'uuid';
 import { EventBus } from '../../data/eventBus';
 import { NodeBlock } from '../../data/types';
 
-export interface Variable {
+
+export interface Output {
   identifier: string
   type: string
   name: string
 }
-export interface VariablesNodeModelGenerics {
-  variableList: Variable[]
+export interface OutputsNodeModelData {
+  outputList: Output[];
 }
 
-export class VariablePortModel extends PortModel {
+export class OutputPortModel extends PortModel {
   constructor() {
     super({
-      type: 'variable',
-      name: 'out',
-      alignment: PortModelAlignment.RIGHT
+      type: 'output',
+      name: 'in',
+      alignment: PortModelAlignment.LEFT
     });
   }
 
@@ -34,19 +35,19 @@ export class VariablePortModel extends PortModel {
   }
 }
 
-export class VariablesNodeModel extends NodeModel<NodeModelGenerics & VariablesNodeModelGenerics> {
+export class OutputsNodeModel extends NodeModel<NodeModelGenerics> {
   private readonly eventBus: EventBus;
-  private readonly data: NodeBlock<VariablesNodeModelGenerics>;
+  private readonly data: NodeBlock<OutputsNodeModelData>;
 
-  constructor(data: NodeBlock<VariablesNodeModelGenerics>, eventBus: EventBus) {
+  constructor(data: NodeBlock<OutputsNodeModelData>, eventBus: EventBus) {
     super({
       id: data.id,
       position: new Point(data.position.x, data.position.y),
-      type: 'variables',
+      type: 'outputs',
     });
     this.eventBus = eventBus;
     this.data = data;
-    this.addPort(new VariablePortModel());
+    this.addPort(new OutputPortModel());
     this.registerListener({
       positionChanged: this.onPositionChanged.bind(this),
       entityRemoved: this.onRemove.bind(this),
@@ -62,13 +63,13 @@ export class VariablesNodeModel extends NodeModel<NodeModelGenerics & VariablesN
       x: event.entity.position.x,
       y: event.entity.position.y,
     };
-    this.eventBus.emit('node:updated', { ...this.data })
+    this.eventBus.emit('node:updated', { ...this.data });
   }
 
-  onAddVar() {
-    const name = window.prompt('Enter variable name');
+  onAddOutput() {
+    const name = window.prompt('Enter output name');
     if (!name) return;
-    this.data.properties.variableList.push({
+    this.data.properties.outputList.push({
       identifier: uuid(),
       type: 'string',
       name,
@@ -76,10 +77,10 @@ export class VariablesNodeModel extends NodeModel<NodeModelGenerics & VariablesN
     this.eventBus.emit('node:updated', { ...this.data });
   }
 
-  varRename(identifier: string, value: string) {
-    this.data.properties.variableList.some((variable) => {
-      if (variable.identifier === identifier) {
-        variable.name = value;
+  outputRename(identifier: string, name: string) {
+    this.data.properties.outputList.some((output) => {
+      if (output.identifier === identifier) {
+        output.name = name;
         return true;
       }
       return false;
@@ -87,12 +88,12 @@ export class VariablesNodeModel extends NodeModel<NodeModelGenerics & VariablesN
     this.eventBus.emit('node:updated', { ...this.data });
   }
 
-  varDelete(identifier: string) {
-    this.data.properties.variableList = this.data.properties.variableList.filter((variable) => variable.identifier !== identifier);
+  outputDelete(identifier: string) {
+    this.data.properties.outputList = this.data.properties.outputList.filter((output) => output.identifier !== identifier);
     this.eventBus.emit('node:updated', { ...this.data });
   }
 
-  getVars() {
-    return this.data.properties.variableList;
+  getOutputs(): Output[] {
+    return this.data.properties.outputList;
   }
 }

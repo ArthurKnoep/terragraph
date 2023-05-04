@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid';
+import { DragEvent } from 'react';
 import { engine, model } from '../../data/diagram';
 import { dragManager } from '../../data/dragManager';
 import { eventBus } from '../../data/eventBus';
@@ -13,9 +14,9 @@ export interface Props {
 export const DropZone = ({
   children,
 }: Props) => {
-  const handleDrop = (evt: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (evt: DragEvent<HTMLDivElement>) => {
     const NodeModel = FactoryMap[dragManager.getNodeType() ?? ''];
-    if (!NodeModel) throw new Error('Node type not found');
+    if (!NodeModel) throw new Error('Unhandled node type');
     const payload: NodeBlock<any> = {
       id: uuid(),
       nodeType: dragManager.getNodeType() ?? '',

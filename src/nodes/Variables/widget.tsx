@@ -33,10 +33,6 @@ export function VariablesNodeWidget({
     setVars([...node.getVars()]);
   };
 
-  const onVarRenameBegin = (identifier: string) => {
-    setEditIdentifier(identifier);
-  }
-
   const onVarRename = (identifier: string, value: string) => {
     node.varRename(identifier, value);
     setEditIdentifier(undefined);
@@ -55,7 +51,7 @@ export function VariablesNodeWidget({
          <div key={variable.identifier} className={styles.varLine}>
            {(variable.identifier !== editIdentifier) ? (
              <div
-               onDoubleClick={() => onVarRenameBegin(variable.identifier)}
+               onDoubleClick={() => setEditIdentifier(variable.identifier)}
                className={styles.varName}
              >
                {variable.name}
